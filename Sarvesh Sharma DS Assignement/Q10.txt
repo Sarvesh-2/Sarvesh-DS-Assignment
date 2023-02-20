@@ -1,0 +1,51 @@
+Q10. Suppose there are two singly linked lists both of which intersect at some point and 
+become a singly list. The head or starting pointers for the both lists are known, but the 
+intersecting node is not known. Also the number of nodes in each of the lists before 
+they intersect is unknown and may be different in each list. List1 may have n nodes 
+before it reaches the intersection point, and list2 might have m nodes before it reaches 
+the intersection point where m and n may be m=n, m<n or m>n. write a program for 
+find a merging node.
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+ bool length(ListNode* head, int k)
+    {
+        while(k and head)
+        {
+            head = head->next;
+            k--;
+        }
+        return k==0;
+    }
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode *curr = head, *next = NULL, *prev = NULL;
+        int count=0;
+        
+        if(k==1) return curr;
+        if(!length(head, k)) return curr;
+
+        while( curr != NULL && count < k){
+            next = curr -> next;
+            curr -> next = prev;
+            prev = curr;
+            curr = next;
+            count++;
+        }
+        if(next != NULL){
+            ListNode *rest_head = reverseKGroup(next, k);
+            head->next =  rest_head;
+        }
+        return prev;
+    }
+};
